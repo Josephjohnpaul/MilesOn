@@ -7,48 +7,93 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Mileson',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: .fromSeed(seedColor: Colors.deepPurple),
-      ),
-      home:  Scaffold(
-        appBar:  AppBar.new(
-          title: Text('Mileson',style: TextStyle(fontWeight: FontWeight.bold)), backgroundColor: Color.fromARGB(255, 4, 128, 74),
-        ),
-        body: Row(
-          children: [
-            Text('Milage', style: TextStyle(fontSize: 24)),
-            TextField(
-              decoration: InputDecoration(
-                border: OutlineInputBorder(),
-                labelText: 'Enter mileage',
-              ),
-            ),
-          ],
-        ),
-      )
+    return const MaterialApp(
+      home: TripCostScreen(),
     );
   }
 }
 
+class TripCostScreen extends StatefulWidget {
+  const TripCostScreen({super.key});
 
+  @override
+  State<TripCostScreen> createState() => _TripCostScreenState();
+}
 
+class _TripCostScreenState extends State<TripCostScreen> {
+
+  final TextEditingController distanceController = TextEditingController();
+  final TextEditingController mileageController = TextEditingController();
+  final TextEditingController priceController = TextEditingController();
+
+  double tripCost = 0;
+
+  void calculateCost() {
+    double distance = double.tryParse(distanceController.text) ?? 0;
+    double mileage = double.tryParse(mileageController.text) ?? 0;
+    double price = double.tryParse(priceController.text) ?? 0;
+
+    if (mileage > 0) {
+      double fuelUsed = distance / mileage;
+      setState(() {
+        tripCost = fuelUsed * price;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Trip Cost Calculator"),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16),
+        child: Column(
+          children: [
+
+            TextField(
+              controller: distanceController,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                labelText: "Distance (km)",
+              ),
+            ),
+
+            TextField(
+              controller: mileageController,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                labelText: "Mileage (km/l)",
+              ),
+            ),
+
+            TextField(
+              controller: priceController,
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(
+                labelText: "Fuel Price (₹)",
+              ),
+            ),
+
+            const SizedBox(height: 20),
+
+            ElevatedButton(
+              onPressed: calculateCost,
+              child: const Text("Calculate"),
+            ),
+
+            const SizedBox(height: 20),
+
+            Text(
+              "Trip Cost: ₹${tripCost.toStringAsFixed(2)}",
+              style: const TextStyle(fontSize: 22),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
