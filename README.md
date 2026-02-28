@@ -34,14 +34,60 @@ MilesOn is a Flutter app for estimating trip fuel usage, total fuel cost, and re
 ## Getting Started
 
 1. Install Flutter: <https://docs.flutter.dev/get-started/install>
-2. In this folder, get dependencies:
+2. Clone the repo and open the project folder:
+   ```bash
+   git clone <your-repo-url>
+   cd MilesOn
+   ```
+3. Get dependencies:
    ```bash
    flutter pub get
    ```
-3. Run the app:
+4. Run the app:
    ```bash
    flutter run
    ```
+
+## Build and Run on a Phone (After Cloning)
+
+1. Connect your phone with a USB cable.
+2. Enable developer options on the phone:
+   - Android: enable `Developer options` and `USB debugging`.
+   - iPhone: enable `Developer Mode` (iOS 16+) and trust the computer.
+3. Verify Flutter setup:
+   ```bash
+   flutter doctor
+   ```
+4. Check that your phone is detected:
+   ```bash
+   flutter devices
+   ```
+5. From the project root, install dependencies:
+   ```bash
+   flutter pub get
+   ```
+6. Run on the connected device:
+   ```bash
+   flutter run
+   ```
+
+### Android APK build
+
+```bash
+flutter build apk --release
+```
+
+Output file:
+
+- `build/app/outputs/flutter-apk/app-release.apk`
+
+### iOS release build (macOS only)
+
+```bash
+flutter build ios --release
+```
+
+Then open `ios/Runner.xcworkspace` in Xcode, select your team/signing profile, and archive for device/TestFlight.
 
 ## Usage
 
